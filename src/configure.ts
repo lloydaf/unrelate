@@ -6,8 +6,12 @@ export async function configure(action: string, value: string): Promise<void> {
       throw new Error("Error: configure requires two parameters");
     }
     switch (action) {
-      case 'baseUrl': {
+      case 'base-url': {
         await configureBaseUrl(value);
+        break;
+      }
+      case 'add-path': {
+        await addPath(value);
         break;
       }
     }
@@ -15,6 +19,18 @@ export async function configure(action: string, value: string): Promise<void> {
   catch (err) {
     logError(err.message)
   }
+}
+
+async function addPath(path: string): Promise<void> {
+  const manager = dataManager();
+  let data = (await manager.next()).value;
+  const paths = data.compilerOptions.paths || {};
+  const keyStart = path.lastIndexOf('/') || 0;
+  const key = path.slice(keyStart + 1);
+  paths[`${key}/*`] = [`${path}/*`];
+  data.compilerOptions.paths = paths;
+  await manager.next(data);
+  return;
 }
 
 async function configureBaseUrl(baseUrl: string): Promise<void> {
