@@ -1,7 +1,12 @@
 #!/usr/bin/env npx ts-node
 
-import * as index from '../src/index';
+import { configure } from '../src';
 
 const args = process.argv.splice(process.execArgv.length + 1);
 
-console.log('args', args);
+switch (args[0]) {
+  case 'configure': {
+    configure(args[1], args[2]);
+    break;
+  }
+}

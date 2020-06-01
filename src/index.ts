@@ -1,3 +1,1 @@
-export function test(){
-  
-}
+export * from './configure';
