@@ -1,6 +1,6 @@
 {
   "name": "unrelate",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A library that transforms relative paths to absolute",
   "main": "./src/index.ts",
   "scripts": {
