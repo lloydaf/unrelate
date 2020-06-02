@@ -27,6 +27,10 @@ export async function configure(action: string, value: string): Promise<void> {
  * @param path The path to be added to your ts project
  */
 async function addPath(path: string): Promise<void> {
+  // remove a trailing forward slash
+  if (path[path.length - 1] === '/') {
+    path = path.slice(0, path.length - 1);
+  }
   const manager = dataManager();
   let data = (await manager.next()).value;
   const paths = data.compilerOptions.paths || {};

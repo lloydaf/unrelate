@@ -4,6 +4,7 @@
   "description": "A library that transforms relative paths to absolute",
   "main": "./bin/unrelate.js",
   "types": "./bin/unrelate.d.ts",
+  "files": ["bin/**/*"],
   "scripts": {
     "test": "jest",
     "build" : "tsc"
