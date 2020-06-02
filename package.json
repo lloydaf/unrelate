@@ -2,12 +2,14 @@
   "name": "unrelate",
   "version": "0.0.1",
   "description": "A library that transforms relative paths to absolute",
-  "main": "./src/index.ts",
+  "main": "./bin/unrelate.js",
+  "types": "./bin/unrelate.d.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build" : "tsc"
   },
   "bin": {
-    "unrelate": "./bin/unrelate.ts"
+    "unrelate": "./bin/unrelate.js"
   },
   "preferGlobal": true,
   "author": "lloydaf",

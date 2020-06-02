@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
 import { parse, stringify } from 'comment-json';
+
 export async function configure(action: string, value: string): Promise<void> {
   try {
     if (!action || !value) {
@@ -21,6 +22,10 @@ export async function configure(action: string, value: string): Promise<void> {
   }
 }
 
+/**
+ * 
+ * @param path The path to be added to your ts project
+ */
 async function addPath(path: string): Promise<void> {
   const manager = dataManager();
   let data = (await manager.next()).value;
@@ -30,7 +35,6 @@ async function addPath(path: string): Promise<void> {
   paths[`${key}/*`] = [`${path}/*`];
   data.compilerOptions.paths = paths;
   await manager.next(data);
-  return;
 }
 
 async function configureBaseUrl(baseUrl: string): Promise<void> {
@@ -38,17 +42,20 @@ async function configureBaseUrl(baseUrl: string): Promise<void> {
   let data = (await manager.next()).value;
   data.compilerOptions.baseUrl = baseUrl;
   await manager.next(data);
-  return;
 }
 
+/**
+ * This is a generator function that is used to get/set data from tsconfig
+ */
 async function* dataManager() {
   let dataStr = await getConfigFile();
   const data = yield parse(dataStr);
   await setConfigFile(stringify(data, null, 2));
-  return;
 }
 
-
+/**
+ * @param message The error message object
+ */
 function logError(message: string): void {
   if (message.includes('ENOENT')) {
     console.error('ERROR: Cannot find tsconfig.json in the current directory.');
@@ -62,7 +69,6 @@ function logError(message: string): void {
 async function setConfigFile(data: string): Promise<void> {
   const configFile = getFilePath();
   await fs.writeFile(configFile, data, 'utf-8');
-  return;
 }
 
 async function getConfigFile(): Promise<string> {
@@ -73,6 +79,6 @@ async function getConfigFile(): Promise<string> {
 
 function getFilePath(): string {
   const directory = process.cwd();
-  const configFile: string = `${directory}/tsconfig.json`;
+  const configFile = `${directory}/tsconfig.json`;
   return configFile;
 }
