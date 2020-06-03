@@ -1,5 +1,4 @@
-import { promises as fs } from 'fs';
-import { parse, stringify } from 'comment-json';
+import { configFileDataManager } from "../util/config-file.util";
 
 export async function configure(action: string, value: string): Promise<void> {
   try {
@@ -23,7 +22,7 @@ export async function configure(action: string, value: string): Promise<void> {
 }
 
 /**
- * 
+ * Adds an absolute path configuration to your project
  * @param path The path to be added to your ts project
  */
 async function addPath(path: string): Promise<void> {
@@ -31,7 +30,7 @@ async function addPath(path: string): Promise<void> {
   if (path[path.length - 1] === '/') {
     path = path.slice(0, path.length - 1);
   }
-  const manager = dataManager();
+  const manager = configFileDataManager();
   let data = (await manager.next()).value;
   const paths = data.compilerOptions.paths || {};
   const keyStart = path.lastIndexOf('/') || 0;
@@ -41,20 +40,15 @@ async function addPath(path: string): Promise<void> {
   await manager.next(data);
 }
 
+/**
+ * Sets the base directory relative to which custom import configurations are matched against
+ * @param baseUrl The baseUrl value to set
+ */
 async function configureBaseUrl(baseUrl: string): Promise<void> {
-  const manager = dataManager();
+  const manager = configFileDataManager();
   let data = (await manager.next()).value;
   data.compilerOptions.baseUrl = baseUrl;
   await manager.next(data);
-}
-
-/**
- * This is a generator function that is used to get/set data from tsconfig
- */
-async function* dataManager() {
-  let dataStr = await getConfigFile();
-  const data = yield parse(dataStr);
-  await setConfigFile(stringify(data, null, 2));
 }
 
 /**
@@ -70,19 +64,3 @@ function logError(message: string): void {
   }
 }
 
-async function setConfigFile(data: string): Promise<void> {
-  const configFile = getFilePath();
-  await fs.writeFile(configFile, data, 'utf-8');
-}
-
-async function getConfigFile(): Promise<string> {
-  const configFile = getFilePath();
-  const data: string = await fs.readFile(configFile, 'utf-8');
-  return data;
-}
-
-function getFilePath(): string {
-  const directory = process.cwd();
-  const configFile = `${directory}/tsconfig.json`;
-  return configFile;
-}
