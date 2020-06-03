@@ -1,9 +1,10 @@
-import { configFileDataManager } from "../util/config-file.util";
+import { configFileDataManager } from '../util/config-file.util';
+import { CommentJSONValue } from 'comment-json';
 
 export async function configure(action: string, value: string): Promise<void> {
   try {
     if (!action || !value) {
-      throw new Error("Error: configure requires two parameters");
+      throw new Error('Error: configure requires two parameters');
     }
     switch (action) {
       case 'base-url': {
@@ -15,9 +16,8 @@ export async function configure(action: string, value: string): Promise<void> {
         break;
       }
     }
-  }
-  catch (err) {
-    logError(err.message)
+  } catch (err) {
+    logError(err.message);
   }
 }
 
@@ -31,7 +31,7 @@ async function addPath(path: string): Promise<void> {
     path = path.slice(0, path.length - 1);
   }
   const manager = configFileDataManager();
-  let data = (await manager.next()).value;
+  const data = (await manager.next()).value;
   const paths = data.compilerOptions.paths || {};
   const keyStart = path.lastIndexOf('/') || 0;
   const key = path.slice(keyStart + 1);
@@ -46,7 +46,7 @@ async function addPath(path: string): Promise<void> {
  */
 async function configureBaseUrl(baseUrl: string): Promise<void> {
   const manager = configFileDataManager();
-  let data = (await manager.next()).value;
+  const data: CommentJSONValue = (await manager.next()).value;
   data.compilerOptions.baseUrl = baseUrl;
   await manager.next(data);
 }
@@ -58,9 +58,7 @@ function logError(message: string): void {
   if (message.includes('ENOENT')) {
     console.error('ERROR: Cannot find tsconfig.json in the current directory.');
     console.log(`You can run 'tsc --init' to create one.`);
-  }
-  else {
+  } else {
     console.error(message);
   }
 }
-

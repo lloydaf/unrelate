@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { parse, stringify } from 'comment-json';
+import { parse, stringify, CommentJSONValue } from 'comment-json';
 import { Config } from '../model/enums';
 
 export async function saveConfigFile(data: string): Promise<void> {
@@ -22,8 +22,9 @@ function getFilePath(path = Config.TSCONFIG): string {
 /**
  * This is a generator function that is used to get/set data from tsconfig
  */
-export async function* configFileDataManager() {
-  let dataStr = await getConfigFile();
+export async function* configFileDataManager(): AsyncGenerator<CommentJSONValue, void> {
+  const dataStr = await getConfigFile();
   const data = yield parse(dataStr);
   await saveConfigFile(stringify(data, null, 2));
+  return;
 }
