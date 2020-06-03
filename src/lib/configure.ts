@@ -35,7 +35,7 @@ async function addPath(path: string): Promise<void> {
   const paths = data.compilerOptions.paths || {};
   const keyStart = path.lastIndexOf('/') || 0;
   const key = path.slice(keyStart + 1);
-  paths[`${key}/*`] = [`${path}/*`];
+  paths[`@${key}/*`] = [`${path}/*`];
   data.compilerOptions.paths = paths;
   await manager.next(data);
 }
