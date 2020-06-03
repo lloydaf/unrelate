@@ -1,4 +1,4 @@
-import { configFileDataManager } from '../util/config-file.util';
+import { configFileDataManager } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 
 export async function configure(action: string, value: string): Promise<void> {
