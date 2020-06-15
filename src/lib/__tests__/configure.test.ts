@@ -1,7 +1,7 @@
-import { configure } from '../configure';
+import * as exported from '../configure';
 
 describe('tests for configure.ts', () => {
   it('should export a function called configure', () => {
-    expect(configure).toBeTruthy();
+    expect(exported['configure']).toBeTruthy();
   });
 });
