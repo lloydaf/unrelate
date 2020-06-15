@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import { parse, stringify, CommentJSONValue } from 'comment-json';
 import { Config } from '../model/enums';
 import { resolve } from 'path';
-import { removeTrailingAsterisk } from './string.util';
+import { removeTrailingCharacter } from './string.util';
 
 async function saveFile(data: string, path: string): Promise<void> {
   const configFile = getFilePath(path);
@@ -16,7 +16,7 @@ async function getFile(path: string): Promise<string> {
 }
 
 export function getFilePath(relativeFilePath: string): string {
-  relativeFilePath = removeTrailingAsterisk(relativeFilePath);
+  relativeFilePath = removeTrailingCharacter(relativeFilePath, '*');
   const directory = process.cwd();
   const absoluteFilePath = resolve(`${directory}/${relativeFilePath}`);
   return absoluteFilePath;

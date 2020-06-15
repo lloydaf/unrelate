@@ -1,7 +1,7 @@
 import { fileDataManager, configFileDataManager, getFilePath } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { dirname } from 'path';
-import { removeTrailingAsterisk } from '../util/string.util';
+import { removeTrailingCharacter } from '../util/string.util';
 
 export async function cleanup(filePath: string): Promise<void> {
   const configManager = configFileDataManager();
@@ -15,7 +15,7 @@ export async function cleanup(filePath: string): Promise<void> {
 
   // the configured paths
   const configuredPaths: Record<string, string> = Object.entries(configuredPathsObj).reduce(
-    (acc, [key, val]) => ({ ...acc, [getFilePath(baseUrl + val)]: removeTrailingAsterisk(key) }),
+    (acc, [key, val]) => ({ ...acc, [getFilePath(baseUrl + val)]: removeTrailingCharacter(key, '*') }),
     {},
   );
 

@@ -1,8 +1,9 @@
-import { configFileDataManager, fileDataManager } from '../file.util';
+import * as exported from '../file.util';
 
 describe('tests for config-file.util', () => {
-  it('should export configFileDataManager, fileDataManager', () => {
-    expect(configFileDataManager).toBeTruthy();
-    expect(fileDataManager).toBeTruthy();
+  it('should export configFileDataManager, fileDataManager, getFilePath', () => {
+    expect(exported['configFileDataManager']).toBeTruthy();
+    expect(exported['fileDataManager']).toBeTruthy();
+    expect(exported['getFilePath']).toBeTruthy();
   });
 });
