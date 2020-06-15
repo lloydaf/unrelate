@@ -2,19 +2,19 @@
 
 This library is used to transform relative paths into absolute paths. Should work with TS projects, tested in Angular.
 
-## Usage {#usage}
+## Usage
 
-### Installation {#installation}
+### Installation
 
 You can install it as a global npm package.
 
 `npm install -g unrelate`
 
-### Configure {#configure}
+### Configure
 
 Before you use the tool, you need to configure base-url and add absolute path references relative to the base-url. Make sure you run these commands from the directory containing your `tsconfig.json` file.
 
-#### Configuring base-url {#configure-base-url}
+#### Configuring base-url
 
 Use the following command to configure your base-url.
 
@@ -24,7 +24,7 @@ In most cases, you might want to set your base-url to the current directory. You
 
 `unrelate configure base-url ./`
 
-#### Configuring paths {#configure-path}
+#### Configuring paths
 
 You can add paths using the following command.
 
@@ -34,7 +34,7 @@ For example, if you want to create an absolute path for `./src/app/components`, 
 
 `unrelate configure add-path ./src/app/components`
 
-### Cleanup {#cleanup}
+### Cleanup
 
 To cleanup a file with relative imports to use the configured absolute imports, use the following command.
 
