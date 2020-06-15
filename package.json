@@ -12,11 +12,11 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint . --ext .ts",
-    "prepare" : "npm run build",
-    "prepublishOnly" : "npm test && npm run lint",
-    "preversion" : "npm run lint",
-    "version" : "npm run format && git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "bin": {
     "unrelate": "./bin/lib/unrelate.js"
@@ -40,5 +40,13 @@
     "prettier": "^2.0.5",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lloydaf/unrelate.git"
+  },
+  "bugs": {
+    "email": "lloydaf@gmail.com",
+    "url": "https://github.com/lloydaf/unrelate/issues"
   }
 }

@@ -1,5 +1,6 @@
-import { configFileDataManager } from '../util/config-file.util';
+import { configFileDataManager } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
+import { removeTrailingCharacter } from '../util/string.util';
 
 export async function configure(action: string, value: string): Promise<void> {
   try {
@@ -26,12 +27,22 @@ export async function configure(action: string, value: string): Promise<void> {
  * @param path The path to be added to your ts project
  */
 async function addPath(path: string): Promise<void> {
-  // remove a trailing forward slash
-  if (path[path.length - 1] === '/') {
-    path = path.slice(0, path.length - 1);
+  if (!path.startsWith('./')) {
+    path = `./${path}`;
   }
   const manager = configFileDataManager();
   const data = (await manager.next()).value;
+  const baseUrl = data?.compilerOptions?.baseUrl;
+  if (!baseUrl) {
+    throw new Error('base-url must be configured before adding paths!');
+  }
+  if (baseUrl === path) {
+    throw new Error('base-url and path cannot be the same!');
+  }
+  if (path.includes(baseUrl)) {
+    path = path.replace(baseUrl, '');
+  }
+  path = removeTrailingCharacter(path, '/');
   const paths = data.compilerOptions.paths || {};
   const keyStart = path.lastIndexOf('/') || 0;
   const key = path.slice(keyStart + 1);
@@ -47,6 +58,12 @@ async function addPath(path: string): Promise<void> {
 async function configureBaseUrl(baseUrl: string): Promise<void> {
   const manager = configFileDataManager();
   const data: CommentJSONValue = (await manager.next()).value;
+  if (baseUrl === '.') {
+    baseUrl = './';
+  }
+  if (!baseUrl.startsWith('./')) {
+    baseUrl = `./${baseUrl}`;
+  }
   data.compilerOptions.baseUrl = baseUrl;
   await manager.next(data);
 }
