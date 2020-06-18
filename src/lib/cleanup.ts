@@ -29,7 +29,9 @@ export async function cleanup(filePath: string): Promise<void> {
   Object.entries(configuredPaths).forEach(([key, value]) => {
     absolutePathsInFile.forEach((path, index) => {
       if (path.includes(key)) {
-        path = path.replace(`${key}/`, value);
+        path = path.replace(`${key}`, value);
+        path = path.replace(/\\/g, '/');
+        path = path.replace(/\/\//g, '/');
         file = file.replace(relativePathsInFile[index], path);
       }
     });
