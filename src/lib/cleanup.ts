@@ -22,7 +22,7 @@ export async function cleanup(filePath: string): Promise<void> {
   const fileManager = fileDataManager(filePath);
   let file: string = <string>(await fileManager.next()).value;
 
-  const relativePathsInFile: string[] = file.match(RegExp(`(?<=import.*)(?<=['"]{1}(./)*)(../)+.*`, 'g')) || [];
+  const relativePathsInFile: string[] = file.match(RegExp(`(?<=['"]{1})(./)*(../)+.*`, 'g')) || [];
   const absolutePathsInFile =
     relativePathsInFile.map((path: string) => getFilePath(`${dirname(filePath)}/${path}`)) || [];
 
