@@ -4,7 +4,7 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/min/unrelate)
 ![npm](https://img.shields.io/npm/v/unrelate)
 
-This library is used to transform relative paths into absolute paths. Should work with TS projects, tested in Angular.
+This library is used to transform relative paths into absolute paths. You should have either a tsconfig.json or jsconfig.json file present in your project directory where you run this tool.
 
 ## Usage
 
@@ -44,6 +44,10 @@ To cleanup a file with relative imports to use the configured absolute imports, 
 
 `unrelate cleanup /path/to/file.ts`
 
-For example, if you wan to cleanup `./src/app/components/component.ts`, use the following command.
+For example, if you want to cleanup `./src/app/components/component.ts`, use the following command.
 
 `unrelate cleanup ./src/app/components/component.ts`
+
+## Contributing
+
+Please feel free to raise a PR if you want to contribute.
