@@ -1,6 +1,7 @@
 import { configFileDataManager } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { removeTrailingCharacter } from '../util/string.util';
+import { Commands } from '../model/enums';
 
 export async function configure(action: string, value: string): Promise<void> {
   try {
@@ -8,11 +9,11 @@ export async function configure(action: string, value: string): Promise<void> {
       throw new Error('Error: configure requires two parameters');
     }
     switch (action) {
-      case 'base-url': {
+      case Commands.BASE_URL: {
         await configureBaseUrl(value);
         break;
       }
-      case 'add-path': {
+      case Commands.ADD_PATH: {
         await addPath(value);
         break;
       }
@@ -34,10 +35,10 @@ async function addPath(path: string): Promise<void> {
   const data = (await manager.next()).value;
   const baseUrl = data?.compilerOptions?.baseUrl;
   if (!baseUrl) {
-    throw new Error('base-url must be configured before adding paths!');
+    throw new Error(`${Commands.BASE_URL} must be configured before adding paths!`);
   }
   if (baseUrl === path) {
-    throw new Error('base-url and path cannot be the same!');
+    throw new Error(`${Commands.BASE_URL} and path cannot be the same!`);
   }
   if (path.includes(baseUrl)) {
     path = path.replace(baseUrl, '');
