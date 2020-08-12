@@ -1,6 +1,6 @@
 {
   "name": "unrelate",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A library that transforms relative paths to absolute",
   "main": "./bin/lib/unrelate.js",
   "types": "./bin/lib/unrelate.d.ts",
