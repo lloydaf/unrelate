@@ -1,6 +1,5 @@
 export enum Config {
   TSCONFIG = 'tsconfig.json',
-  JSCONFIG = 'jsconfig.json',
 }
 
 export enum Commands {
