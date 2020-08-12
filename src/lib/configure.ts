@@ -1,7 +1,7 @@
 import { configFileDataManager } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { removeTrailingCharacter } from '../util/string.util';
-import { Commands } from '../model/enums';
+import { Commands, Config } from '../model/enums';
 
 export async function configure(action: string, value: string): Promise<void> {
   try {
@@ -74,8 +74,8 @@ async function configureBaseUrl(baseUrl: string): Promise<void> {
  */
 function logError(message: string): void {
   if (message.includes('ENOENT')) {
-    console.error('ERROR: Cannot find tsconfig.json in the current directory.');
-    console.log(`You can run 'tsc --init' to create one.`);
+    console.error(`ERROR: Cannot find ${Config.TSCONFIG} or ${Config.JSCONFIG} in the current directory.`);
+    console.log(`If you're using typescript, can run 'tsc --init' to create one.`);
   } else {
     console.error(message);
   }
