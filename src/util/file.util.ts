@@ -33,15 +33,8 @@ export async function* fileDataManager(filePath: string): AsyncGenerator<string,
  * This is a generator function that is used to get/set data from tsconfig
  */
 export async function* configFileDataManager(): AsyncGenerator<CommentJSONValue, void, CommentJSONValue> {
-  let dataStr: string;
-  let fileName: string;
-  try {
-    dataStr = await getFile(Config.TSCONFIG);
-    fileName = Config.TSCONFIG;
-  } catch (err) {
-    dataStr = await getFile(Config.JSCONFIG);
-    fileName = Config.JSCONFIG;
-  }
+  const fileName = Config.TSCONFIG;
+  const dataStr = await getFile(fileName);
   const data: CommentJSONValue = yield parse(dataStr);
   await saveFile(stringify(data, null, 2), fileName);
   return;

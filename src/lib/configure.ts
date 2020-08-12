@@ -74,8 +74,10 @@ async function configureBaseUrl(baseUrl: string): Promise<void> {
  */
 function logError(message: string): void {
   if (message.includes('ENOENT')) {
-    console.error(`ERROR: Cannot find ${Config.TSCONFIG} or ${Config.JSCONFIG} in the current directory.`);
-    console.log(`If you're using typescript, can run 'tsc --init' to create one.`);
+    console.error(`ERROR: Cannot find ${Config.TSCONFIG} in the current directory.`);
+    console.log(
+      `You can run 'tsc --init' to create one or refer https://www.typescriptlang.org/docs/handbook/tsconfig-json.html for more information.`,
+    );
   } else {
     console.error(message);
   }
