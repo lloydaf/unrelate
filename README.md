@@ -8,9 +8,9 @@ This library is used to transform relative paths into absolute paths for [TypeSc
 
 ## Usage
 
-### Installation
+---
 
-#### As a global package
+### As a global package
 
 You can install it as a global [npm](https://www.npmjs.com) package using the following bash command.
 
@@ -18,7 +18,9 @@ You can install it as a global [npm](https://www.npmjs.com) package using the fo
 npm install -g unrelate
 ```
 
-#### As a devDependency
+---
+
+### As a devDependency
 
 If you would rather install it as a [devDependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file) instead, you can do that as well.
 
@@ -36,7 +38,9 @@ If you've installed it as a `devDependency`, to use `unrelate`, you have to use 
 npm run unrelate <command>
 ```
 
-#### Without installing (using npx)
+---
+
+### Without installing (using npx)
 
 If you'd rather not install it at all, you can simply use [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) to run `unrelate` using the following command.
 
@@ -44,11 +48,13 @@ If you'd rather not install it at all, you can simply use [npx](https://medium.c
 npx unrelate <command>
 ```
 
-### Base URL
+---
+
+## Base URL
 
 Before you start using `unrelate`, you have to configure the [baseUrl](https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url) property in your `tsconfig.json` file. It informs the compiler where to find modules. All absolute import paths you configure using `unrelate`, are always relative to the `baseUrl`. So set the property to the folder that contains, or contains subfolders that contains all the `.ts` files that would use the absolute imports. It's common to set `baseUrl` to the project root folder or the `src` or `lib` folders, depending on where most of your code lies.
 
-#### Configuration
+### Configuration
 
 You can either add it manually in your `tsconfig.json` file, or let `unrelate` do it for you.
 
@@ -62,11 +68,13 @@ If you want to set it to the current directory (project root), you can use the f
 unrelate configure base-url ./
 ```
 
-### Paths
+---
+
+## Paths
 
 After setting your Base URL, you can now configure your absolute paths to import from.
 
-#### Configuration
+### Configuration
 
 You can add paths using the following command.
 
@@ -90,7 +98,9 @@ in your `tsconfig.json` file. You can now import from `'@services'` in your `.ts
 
 (Also note that if setting paths should be after you set your Base URL. If you change your Base URL after adding paths, your paths will not automatically reflect that change)
 
-### Cleanup
+---
+
+## Cleanup
 
 The cleanup tool can save you time, by cleaning up files that have relative imports, and change them to absolute imports, depending on what paths you have configured in the previous step.
 
@@ -107,6 +117,8 @@ unrelate cleanup ./src/app/components/component.ts
 ```
 
 Once you run this command, you should see that the file now uses absolute imports instead of relative ones wherever possible.
+
+---
 
 ## Contributing
 
