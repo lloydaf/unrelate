@@ -1,4 +1,4 @@
-import { configFileDataManager } from '../util/file.util';
+import { configFileDataManager, doesItExist } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { removeTrailingCharacter } from '../util/string.util';
 import { Commands } from '../model/enums';
@@ -24,6 +24,9 @@ export async function configure(action: string, value: string): Promise<void> {
  * @param path The path to be added to your ts project
  */
 async function addPath(path: string): Promise<void> {
+  if (!doesItExist(path)) {
+    throw new Error('Not a valid folder path');
+  }
   if (!path.startsWith('./')) {
     path = `./${path}`;
   }
@@ -53,6 +56,9 @@ async function addPath(path: string): Promise<void> {
  * @param baseUrl The baseUrl value to set
  */
 async function configureBaseUrl(baseUrl: string): Promise<void> {
+  if (!doesItExist(baseUrl)) {
+    throw new Error('Not a valid folder path');
+  }
   const manager = configFileDataManager();
   const data: CommentJSONValue = (await manager.next()).value;
   if (baseUrl === '.') {

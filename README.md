@@ -8,8 +8,6 @@ This library is used to transform relative paths into absolute paths for [TypeSc
 
 ## Usage
 
----
-
 ### As a global package
 
 You can install it as a global [npm](https://www.npmjs.com) package using the following bash command.
@@ -48,8 +46,6 @@ If you'd rather not install it at all, you can simply use [npx](https://medium.c
 npx unrelate <command>
 ```
 
----
-
 ## Base URL
 
 Before you start using `unrelate`, you have to configure the [baseUrl](https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url) property in your `tsconfig.json` file. It informs the compiler where to find modules. All absolute import paths you configure using `unrelate`, are always relative to the `baseUrl`. So set the property to the folder that contains, or contains subfolders that contains all the `.ts` files that would use the absolute imports. It's common to set `baseUrl` to the project root folder or the `src` or `lib` folders, depending on where most of your code lies.
@@ -67,8 +63,6 @@ If you want to set it to the current directory (project root), you can use the f
 ```bash
 unrelate configure base-url ./
 ```
-
----
 
 ## Paths
 
@@ -98,8 +92,6 @@ in your `tsconfig.json` file. You can now import from `'@services'` in your `.ts
 
 (Also note that if setting paths should be after you set your Base URL. If you change your Base URL after adding paths, your paths will not automatically reflect that change)
 
----
-
 ## Cleanup
 
 The cleanup tool can save you time, by cleaning up files that have relative imports, and change them to absolute imports, depending on what paths you have configured in the previous step.
@@ -117,8 +109,6 @@ unrelate cleanup ./src/app/components/component.ts
 ```
 
 Once you run this command, you should see that the file now uses absolute imports instead of relative ones wherever possible.
-
----
 
 ## Contributing
 

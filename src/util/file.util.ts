@@ -40,6 +40,6 @@ export async function* configFileDataManager(): AsyncGenerator<CommentJSONValue,
   return;
 }
 
-export function doesFileExist(filePath: string): boolean {
-  return files.existsSync(filePath);
+export function doesItExist(path: string): boolean {
+  return files.existsSync(path);
 }
