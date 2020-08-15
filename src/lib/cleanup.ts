@@ -1,11 +1,11 @@
-import { fileDataManager, configFileDataManager, getFilePath, doesItExist } from '../util/file.util';
+import { fileDataManager, configFileDataManager, getFilePath, doesItExist, fileOrFolder } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { dirname } from 'path';
 import { removeTrailingCharacter } from '../util/string.util';
 
-export async function cleanup(filePath: string): Promise<void> {
-  if (!doesItExist(filePath)) {
-    throw new Error('Not a valid file path');
+export async function cleanup(path: string): Promise<void> {
+  if (!doesItExist(path)) {
+    throw new Error(`Not a valid ${fileOrFolder(path)} path`);
   }
   const configManager = configFileDataManager();
   const configFile: CommentJSONValue = (await configManager.next()).value;
@@ -25,12 +25,11 @@ export async function cleanup(filePath: string): Promise<void> {
     {},
   );
 
-  const fileManager = fileDataManager(filePath);
+  const fileManager = fileDataManager(path);
   let file: string = <string>(await fileManager.next()).value;
 
   const relativePathsInFile: string[] = file.match(RegExp(`(?<=['"]{1})(\\./)*(\\.\\./)+.*`, 'g')) || [];
-  const absolutePathsInFile =
-    relativePathsInFile.map((path: string) => getFilePath(`${dirname(filePath)}/${path}`)) || [];
+  const absolutePathsInFile = relativePathsInFile.map((path: string) => getFilePath(`${dirname(path)}/${path}`)) || [];
 
   Object.entries(configuredPaths).forEach(([key, value]) => {
     absolutePathsInFile.forEach((path, index) => {

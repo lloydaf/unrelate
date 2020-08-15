@@ -1,7 +1,7 @@
-import { configFileDataManager, doesItExist } from '../util/file.util';
+import { configFileDataManager, doesItExist, fileOrFolder } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { removeTrailingCharacter } from '../util/string.util';
-import { Commands } from '../model/enums';
+import { Commands, PathTypes } from '../model/enums';
 
 export async function configure(action: string, value: string): Promise<void> {
   if (!action || !value) {
@@ -25,7 +25,7 @@ export async function configure(action: string, value: string): Promise<void> {
  */
 async function addPath(path: string): Promise<void> {
   if (!doesItExist(path)) {
-    throw new Error('Not a valid folder path');
+    throw new Error(`Not a valid ${fileOrFolder(path)} path`);
   }
   if (!path.startsWith('./')) {
     path = `./${path}`;
@@ -46,7 +46,18 @@ async function addPath(path: string): Promise<void> {
   const paths = data.compilerOptions.paths || {};
   const keyStart = path.lastIndexOf('/') || 0;
   const key = path.slice(keyStart + 1);
-  paths[`@${key}/*`] = (doesItExist(`${path}/index.ts`) && [`${path}/*`, `${path}/index`]) || [`${path}/*`];
+
+  // This allows adding a path for a file as well
+  switch (fileOrFolder(path)) {
+    case PathTypes.FILE: {
+      paths[`@${key.slice(0, key.lastIndexOf('.'))}`] = [`${path.slice(0, path.lastIndexOf('.'))}`];
+      break;
+    }
+    case PathTypes.FOLDER: {
+      paths[`@${key}*`] = (doesItExist(`${path}/index.ts`) && [`${path}*`, `${path}/index`]) || [`${path}*`];
+      break;
+    }
+  }
   data.compilerOptions.paths = paths;
   await manager.next(data);
 }
@@ -57,7 +68,7 @@ async function addPath(path: string): Promise<void> {
  */
 async function configureBaseUrl(baseUrl: string): Promise<void> {
   if (!doesItExist(baseUrl)) {
-    throw new Error('Not a valid folder path');
+    throw new Error('Not a valid directory path');
   }
   const manager = configFileDataManager();
   const data: CommentJSONValue = (await manager.next()).value;

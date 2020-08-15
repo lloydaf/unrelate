@@ -8,3 +8,8 @@ export enum Commands {
   CLEANUP = 'cleanup',
   CONFIGURE = 'configure',
 }
+
+export enum PathTypes {
+  FOLDER = 'folder',
+  FILE = 'file',
+}
