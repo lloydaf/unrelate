@@ -1,11 +1,38 @@
-import { fileDataManager, configFileDataManager, getFilePath, doesItExist, fileOrFolder } from '../util/file.util';
+import {
+  fileDataManager,
+  configFileDataManager,
+  getFilePath,
+  doesItExist,
+  fileOrFolder,
+  getDirectoryItems,
+} from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { dirname } from 'path';
 import { removeTrailingCharacter } from '../util/string.util';
+import { PathTypes } from '../model/enums';
 
-export async function cleanup(path: string): Promise<void> {
-  if (!doesItExist(path)) {
-    throw new Error(`Not a valid ${fileOrFolder(path)} path`);
+export async function cleanup(paramPath: string): Promise<void> {
+  if (!doesItExist(paramPath)) {
+    throw new Error(`Not a valid ${fileOrFolder(paramPath)} path`);
+  }
+  if (fileOrFolder(paramPath) === PathTypes.FOLDER) {
+    const filesInDirectory = getDirectoryItems(paramPath);
+    filesInDirectory.forEach((item) => {
+      switch (fileOrFolder(item)) {
+        case PathTypes.FILE: {
+          if (item.endsWith('.ts')) {
+            console.log('cleaning up', item);
+            cleanup(item);
+          }
+          break;
+        }
+        case PathTypes.FOLDER: {
+          cleanup(item);
+          break;
+        }
+      }
+    });
+    return;
   }
   const configManager = configFileDataManager();
   const configFile: CommentJSONValue = (await configManager.next()).value;
@@ -25,12 +52,12 @@ export async function cleanup(path: string): Promise<void> {
     {},
   );
 
-  const fileManager = fileDataManager(path);
+  const fileManager = fileDataManager(paramPath);
   let file: string = <string>(await fileManager.next()).value;
 
   const relativePathsInFile: string[] = file.match(RegExp(`(?<=['"]{1})(\\./)*(\\.\\./)+.*`, 'g')) || [];
-  const absolutePathsInFile = relativePathsInFile.map((path: string) => getFilePath(`${dirname(path)}/${path}`)) || [];
-
+  const absolutePathsInFile =
+    relativePathsInFile.map((path: string) => getFilePath(`${dirname(paramPath)}/${path}`)) || [];
   Object.entries(configuredPaths).forEach(([key, value]) => {
     absolutePathsInFile.forEach((path, index) => {
       if (path.includes(key)) {

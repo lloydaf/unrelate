@@ -48,3 +48,7 @@ export function fileOrFolder(path: string): PathTypes {
   const stat = files.lstatSync(path);
   return (stat.isFile() && PathTypes.FILE) || PathTypes.FOLDER;
 }
+
+export function getDirectoryItems(path: string): string[] {
+  return files.readdirSync(path).map((val: string) => `${path}/${val}`);
+}
