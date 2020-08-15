@@ -9,7 +9,7 @@ export async function cleanup(filePath: string): Promise<void> {
   }
   const configManager = configFileDataManager();
   const configFile: CommentJSONValue = (await configManager.next()).value;
-  const configuredPathsObj: Record<string, string> = configFile?.compilerOptions?.paths;
+  const configuredPathsObj: Record<string, string[]> = configFile?.compilerOptions?.paths;
   const baseUrl: string = configFile?.compilerOptions?.baseUrl;
 
   if (!configuredPathsObj || !baseUrl) {
@@ -18,14 +18,17 @@ export async function cleanup(filePath: string): Promise<void> {
 
   // the configured paths
   const configuredPaths: Record<string, string> = Object.entries(configuredPathsObj).reduce(
-    (acc, [key, val]) => ({ ...acc, [getFilePath(baseUrl + val)]: removeTrailingCharacter(key, '*') }),
+    (acc: Record<string, string>, [key, val]: [string, string[]]) => ({
+      ...acc,
+      [getFilePath(baseUrl + val[0])]: removeTrailingCharacter(key, '*'),
+    }),
     {},
   );
 
   const fileManager = fileDataManager(filePath);
   let file: string = <string>(await fileManager.next()).value;
 
-  const relativePathsInFile: string[] = file.match(RegExp(`(?<=['"]{1})(./)*(../)+.*`, 'g')) || [];
+  const relativePathsInFile: string[] = file.match(RegExp(`(?<=['"]{1})(\\./)*(\\.\\./)+.*`, 'g')) || [];
   const absolutePathsInFile =
     relativePathsInFile.map((path: string) => getFilePath(`${dirname(filePath)}/${path}`)) || [];
 
