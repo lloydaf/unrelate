@@ -1,25 +1,21 @@
-import { configFileDataManager } from '../util/file.util';
+import { configFileDataManager, doesItExist } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { removeTrailingCharacter } from '../util/string.util';
-import { Commands, Config } from '../model/enums';
+import { Commands } from '../model/enums';
 
 export async function configure(action: string, value: string): Promise<void> {
-  try {
-    if (!action || !value) {
-      throw new Error('Error: configure requires two parameters');
+  if (!action || !value) {
+    throw new Error('Error: configure requires two parameters');
+  }
+  switch (action) {
+    case Commands.BASE_URL: {
+      await configureBaseUrl(value);
+      break;
     }
-    switch (action) {
-      case Commands.BASE_URL: {
-        await configureBaseUrl(value);
-        break;
-      }
-      case Commands.ADD_PATH: {
-        await addPath(value);
-        break;
-      }
+    case Commands.ADD_PATH: {
+      await addPath(value);
+      break;
     }
-  } catch (err) {
-    logError(err.message);
   }
 }
 
@@ -28,6 +24,9 @@ export async function configure(action: string, value: string): Promise<void> {
  * @param path The path to be added to your ts project
  */
 async function addPath(path: string): Promise<void> {
+  if (!doesItExist(path)) {
+    throw new Error('Not a valid folder path');
+  }
   if (!path.startsWith('./')) {
     path = `./${path}`;
   }
@@ -35,10 +34,10 @@ async function addPath(path: string): Promise<void> {
   const data = (await manager.next()).value;
   const baseUrl = data?.compilerOptions?.baseUrl;
   if (!baseUrl) {
-    throw new Error(`${Commands.BASE_URL} must be configured before adding paths!`);
+    throw new Error(`${Commands.BASE_URL} must be configured before adding paths`);
   }
   if (baseUrl === path) {
-    throw new Error(`${Commands.BASE_URL} and path cannot be the same!`);
+    throw new Error(`${Commands.BASE_URL} and path cannot be the same`);
   }
   if (path.includes(baseUrl)) {
     path = path.replace(baseUrl, '');
@@ -57,6 +56,9 @@ async function addPath(path: string): Promise<void> {
  * @param baseUrl The baseUrl value to set
  */
 async function configureBaseUrl(baseUrl: string): Promise<void> {
+  if (!doesItExist(baseUrl)) {
+    throw new Error('Not a valid folder path');
+  }
   const manager = configFileDataManager();
   const data: CommentJSONValue = (await manager.next()).value;
   if (baseUrl === '.') {
@@ -67,18 +69,4 @@ async function configureBaseUrl(baseUrl: string): Promise<void> {
   }
   data.compilerOptions.baseUrl = baseUrl;
   await manager.next(data);
-}
-
-/**
- * @param message The error message object
- */
-function logError(message: string): void {
-  if (message.includes('ENOENT')) {
-    console.error(`ERROR: Cannot find ${Config.TSCONFIG} in the current directory.`);
-    console.log(
-      `You can run 'tsc --init' to create one or refer https://www.typescriptlang.org/docs/handbook/tsconfig-json.html for more information.`,
-    );
-  } else {
-    console.error(message);
-  }
 }
