@@ -1,6 +1,6 @@
 import files, { promises as fs } from 'fs';
 import { parse, stringify, CommentJSONValue } from 'comment-json';
-import { Config } from '../model/enums';
+import { Config, PathTypes } from '../model/enums';
 import { resolve } from 'path';
 import { removeTrailingCharacter } from './string.util';
 
@@ -42,4 +42,13 @@ export async function* configFileDataManager(): AsyncGenerator<CommentJSONValue,
 
 export function doesItExist(path: string): boolean {
   return files.existsSync(path);
+}
+
+export function fileOrFolder(path: string): PathTypes {
+  const stat = files.lstatSync(path);
+  return (stat.isFile() && PathTypes.FILE) || PathTypes.FOLDER;
+}
+
+export function getDirectoryItems(path: string): string[] {
+  return files.readdirSync(path).map((val: string) => `${path}/${val}`);
 }
