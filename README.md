@@ -90,6 +90,8 @@ in your `tsconfig.json` file. You can now import from `'@services'` in your `.ts
 
 (Note that paths are always relative to Base URL. So if your `baseUrl` value is `src`, and you are adding an absolute path for `src/app/components`, the value for `@components/*` will show up as `app/components/*`, not `src/app/components/*`)
 
+(Also note that if you are setting aliases for a ts-node project, you will have to add [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) to your application)
+
 (Also note that if setting paths should be after you set your Base URL. If you change your Base URL after adding paths, your paths will not automatically reflect that change)
 
 ## Cleanup
