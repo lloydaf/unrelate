@@ -23,7 +23,7 @@ export async function configure(action: string, value: string): Promise<void> {
  * Adds an absolute path configuration to your project
  * @param path The path to be added to your ts project
  */
-async function addPath(path: string): Promise<void> {
+export async function addPath(path: string): Promise<void> {
   if (!doesItExist(path)) {
     throw new Error(`Not a valid ${fileOrFolder(path)} path`);
   }
@@ -67,7 +67,7 @@ async function addPath(path: string): Promise<void> {
  * Sets the base directory relative to which custom import configurations are matched against
  * @param baseUrl The baseUrl value to set
  */
-async function configureBaseUrl(baseUrl: string): Promise<void> {
+export async function configureBaseUrl(baseUrl: string): Promise<void> {
   if (!doesItExist(baseUrl)) {
     throw new Error('Not a valid directory path');
   }

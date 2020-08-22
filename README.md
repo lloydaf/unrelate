@@ -115,9 +115,11 @@ Once you run this command, you should see that the file now uses absolute import
 You can also clean up a whole directory. Just pass the name of the directory instead of the file and `unrelate` will do the rest.
 
 For example,
+
 ```bash
 unrelate cleanup ./src/app/components
 ```
+
 will cleanup all files in the components directory and any files in any child directory.
 
 ## Contributing
