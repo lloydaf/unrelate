@@ -54,7 +54,8 @@ async function addPath(path: string): Promise<void> {
       break;
     }
     case PathTypes.FOLDER: {
-      paths[`@${key}*`] = (doesItExist(`${path}/index.ts`) && [`${path}*`, `${path}/index`]) || [`${path}*`];
+      paths[`@${key}*`] = [`${path}*`];
+      doesItExist(`${path}/index.ts`) && (paths[`@${key}`] = [`${path}/index`]);
       break;
     }
   }
