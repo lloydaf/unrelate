@@ -38,11 +38,13 @@ export async function cleanup(paramPath: string): Promise<void> {
   const configManager = configFileDataManager();
   const configFile: CommentJSONValue = (await configManager.next()).value;
   const configuredPathsObj: Record<string, string[]> = configFile?.compilerOptions?.paths;
-  const baseUrl: string = configFile?.compilerOptions?.baseUrl;
+  let baseUrl: string = configFile?.compilerOptions?.baseUrl;
 
   if (!configuredPathsObj || !baseUrl) {
     throw new Error('You need to configure base-url and paths first');
   }
+
+  !baseUrl.endsWith('/') && (baseUrl = `${baseUrl}/`);
 
   // the configured paths
   const configuredPaths: Record<string, string> = Object.entries(configuredPathsObj).reduce(
@@ -59,6 +61,7 @@ export async function cleanup(paramPath: string): Promise<void> {
   const relativePathsInFile: string[] = file.match(RegExp(`(?<=['"]{1})(\\./)*(\\.\\./)+.*`, 'g')) || [];
   const absolutePathsInFile =
     relativePathsInFile.map((path: string) => getFilePath(`${dirname(paramPath)}/${path}`)) || [];
+
   Object.entries(configuredPaths).forEach(([key, value]) => {
     absolutePathsInFile.forEach((path, index) => {
       if (path.includes(key)) {
