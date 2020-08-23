@@ -5,6 +5,7 @@ import {
   doesItExist,
   fileOrFolder,
   getDirectoryItems,
+  getAbsolutePathRelativeToBaseUrl,
 } from '../util/file.util';
 import { CommentJSONValue } from 'comment-json';
 import { dirname } from 'path';
@@ -47,7 +48,7 @@ export async function cleanup(paramPath: string): Promise<void> {
   const configuredPaths: Record<string, string> = Object.entries(configuredPathsObj).reduce(
     (acc: Record<string, string>, [key, val]: [string, string[]]) => ({
       ...acc,
-      [getFilePath(baseUrl + val[0])]: removeTrailingCharacter(key, '*'),
+      [getAbsolutePathRelativeToBaseUrl(baseUrl + val[0])]: removeTrailingCharacter(key, '*'),
     }),
     {},
   );

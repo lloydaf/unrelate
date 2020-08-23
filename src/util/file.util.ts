@@ -23,6 +23,13 @@ export function getFilePath(relativeFilePath: string): string {
   return absoluteFilePath;
 }
 
+export function getAbsolutePathRelativeToBaseUrl(relativeFilePath: string): string {
+  const projectRootDirectory = resolve(dirname(findUp.sync(Config.TSCONFIG) || Config.TSCONFIG));
+  relativeFilePath = removeTrailingCharacter(relativeFilePath, '*');
+  const absoluteFilePath = resolve(`${projectRootDirectory}/${relativeFilePath}`);
+  return absoluteFilePath;
+}
+
 export async function* fileDataManager(filePath: string): AsyncGenerator<string, void, string> {
   const dataStr = await getFile(filePath);
   const data: string = yield dataStr;
