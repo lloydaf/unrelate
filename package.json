@@ -25,7 +25,8 @@
   "author": "lloydaf",
   "license": "MIT",
   "dependencies": {
-    "comment-json": "^3.0.3"
+    "comment-json": "^3.0.3",
+    "find-up": "^5.0.0"
   },
   "devDependencies": {
     "@types/comment-json": "^1.1.1",
