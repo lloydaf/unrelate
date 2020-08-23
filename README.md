@@ -4,7 +4,7 @@
 ![npm bundle size](https://img.shields.io/bundlephobia/min/unrelate)
 ![npm](https://img.shields.io/npm/v/unrelate)
 
-This library is used to transform relative paths into absolute paths for [TypeScript](https://www.typescriptlang.org) projects. **You should have a [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) file present in the directory where you run this tool.**
+This library is used to transform relative paths into absolute paths for [TypeScript](https://www.typescriptlang.org) projects.
 
 ## Usage
 
@@ -48,7 +48,7 @@ npx unrelate <command>
 
 ## Base URL
 
-Before you start using `unrelate`, you have to configure the [baseUrl](https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url) property in your `tsconfig.json` file. It informs the compiler where to find modules. All absolute import paths you configure using `unrelate`, are always relative to the `baseUrl`. So set the property to the folder that contains, or contains subfolders that contains all the `.ts` files that would use the absolute imports. It's common to set `baseUrl` to the project root folder or the `src` or `lib` folders, depending on where most of your code lies.
+Before you start using `unrelate`, you have to configure the [baseUrl](https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url) property in your [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) file. It informs the compiler where to find modules. All absolute import paths you configure using `unrelate`, are always relative to the `baseUrl`. So set the property to the folder that contains, or contains subfolders that contains all the `.ts` files that would use the absolute imports. It's common to set `baseUrl` to the project root folder or the `src` or `lib` folders, depending on where most of your code lies.
 
 ### Configuration
 
