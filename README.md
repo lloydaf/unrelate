@@ -6,6 +6,10 @@
 
 This library is used to transform relative paths into absolute paths for [TypeScript](https://www.typescriptlang.org) projects.
 
+> Note: If you are setting aliases for a `ts-node` project, you will have to add [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) to your application
+
+---
+
 ## Usage
 
 ### As a global package
@@ -46,6 +50,8 @@ If you'd rather not install it at all, you can simply use [npx](https://medium.c
 npx unrelate <command>
 ```
 
+---
+
 ## Base URL
 
 Before you start using `unrelate`, you have to configure the [baseUrl](https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url) property in your [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) file. It informs the compiler where to find modules. All absolute import paths you configure using `unrelate`, are always relative to the `baseUrl`. So set the property to the folder that contains, or contains subfolders that contains all the `.ts` files that would use the absolute imports. It's common to set `baseUrl` to the project root folder or the `src` or `lib` folders, depending on where most of your code lies.
@@ -64,9 +70,13 @@ If you want to set it to the current directory (project root), you can use the f
 unrelate configure base-url ./
 ```
 
+---
+
 ## Paths
 
 After setting your Base URL, you can now configure your absolute paths to import from.
+
+> Note: You should set paths after you set your Base URL. If you change your Base URL after adding paths, your paths will not automatically reflect that change
 
 ### Configuration
 
@@ -88,11 +98,9 @@ Once that's done, you should be able to see an entry like
 
 in your `tsconfig.json` file. You can now import from `'@services'` in your `.ts` files!
 
-(Note that paths are always relative to Base URL. So if your `baseUrl` value is `src`, and you are adding an absolute path for `src/app/components`, the value for `@components/*` will show up as `app/components/*`, not `src/app/components/*`)
+> Note: Paths are always relative to Base URL. So if your `baseUrl` value is `src`, and you are adding an absolute path for `src/app/components`, the value for `@components/*` will show up as `app/components/*`, not `src/app/components/*`
 
-(Also note that if you are setting aliases for a ts-node project, you will have to add [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) to your application)
-
-(Also note that if setting paths should be after you set your Base URL. If you change your Base URL after adding paths, your paths will not automatically reflect that change)
+---
 
 ## Cleanup
 
@@ -121,6 +129,8 @@ unrelate cleanup ./src/app/components
 ```
 
 will cleanup all files in the components directory and any files in any child directory.
+
+---
 
 ## Contributing
 
