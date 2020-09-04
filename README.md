@@ -134,4 +134,4 @@ will cleanup all files in the components directory and any files in any child di
 
 ## Contributing
 
-Please feel free to raise a PR if you want to contribute.
+Read [this](./CONTRIBUTING.md) before raising a PR.
