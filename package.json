@@ -50,5 +50,10 @@
   "bugs": {
     "email": "lloydaf@gmail.com",
     "url": "https://github.com/lloydaf/unrelate/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test"
+    }
   }
 }
