@@ -134,4 +134,4 @@ will cleanup all files in the components directory and any files in any child di
 
 ## Contributing
 
-Read [this](./CONTRIBUTING.md) before raising a PR.
+You can find out how to contribute by reading the [CONTRIBUTING](./CONTRIBUTING.md) file.
